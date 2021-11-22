@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+</head>
+<body>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#result" data-url="http://192.168.0.195:5555/w22/1team.json">한식</a></li>
+        <li><a href="#result" data-url="http://192.168.0.215:5555/w22/2team.json">일식</a></li>
+        <li><a href="#result" data-url="http://192.168.0.188:5555/w22/3team.json">프랜차이즈</a></li>
+    </ul>
+    <div id="result">  <!--T1 누르면 결과 나오는 부분-->
+        <h1>RESULT DIV</h1>
+    </div>
+</div>
+
+<script>
+$(document).ready(function (){
+    $("#tabs").tabs()
+
+    $("#tabs a").on("click",function (e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        console.log(e.target) // <a>태그 -> 끄집어낼때는 attr
+
+        // console.log($(e.target).data("url")) // data메소드 기능 in jquery
+        // e.target.getAttribute("data-url") 과 같음 <- 쓸데없이 jquery 함수 호출하지 않아도 되서 얘 추천(함수는 느리다!)
+        const url = $(e.target).data("url")
+        $.getJSON(url,function (arr){
+            console.log(arr)
+        }) // getjson (한식,일식,프랜차이즈 데이터 가져오기)
+
+    }) // click
+})
+</script>
+</body>
+</html>

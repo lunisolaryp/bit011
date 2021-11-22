@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--store.js 쓸 때 제이쿼리 필요해서 위에 둠-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="store.js"></script>
+
+<!--DOM처리는 이 밑에서-->
+<script>
+    // 비동기 => 콜백
+    storeService.loadJson("http://192.168.0.195:5555/w22/1team.json", function (arr){
+        console.log(arr)
+    })
+</script>
+</body>
+</html>

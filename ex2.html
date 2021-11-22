@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<select name="category">
+    <option value="0">---</option>
+    <option value="http://192.168.0.195:5555/w22/1team.json">한식</option>
+    <option value="http://192.168.0.215:5555/w22/2team.json">일식</option>
+    <option value="http://192.168.0.188:5555/w22/3team.json">프렌차이즈</option>
+</select>
+
+<select name="stores"> // 가게 이름 뿌려주는 select
+
+</select>
+
+<ul class="datails">
+
+</ul>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function (e){
+
+    let storesArr = []
+
+    $("select[name='category']").on("change",function(e){
+        // console.log(e.target)
+        const url = $("select[name='category'] option:selected").val() // 카테고리 누를때마다 1,2,3(위에서 지정한 value값) 나옴 -> ip로 바꿔줘~
+        // console.log(document.querySelector("select[name='category'] option:selected")) // 안됨 -> selected는 jquery에서만 쓸 수 있음
+
+        if(!url === '0'){
+            return
+        } // ip가 없을 경우
+
+        $.getJSON(url, function(arr){ // 데이터 가져온 부분
+            console.log(arr)
+            storesArr = arr
+
+            let str ='<option value="0">-----</option>'
+
+            for (let i = 0; i < arr.length ; i++) {
+                const {sno,sname} = arr[i]
+                console.log(sno, sname)
+                str += `<option value="${sno}">${sname}</option>`
+            }//end for
+            $("select[name='stores']").html(str)
+        }) // 가게 정보
+    })
+
+    $("select[name='stores']").on("change",function (e){
+        // console.log(e.target.value) // sno
+        const sno = e.target.value
+
+        // find는 순수한DOM 찾는 거고, sno에 맞는 가게의 메뉴를 찾는 거니까 filter써야해
+        const filterResult = storesArr.filter(store => store.sno === sno)[0]
+        console.log(filterResult) // 배열로 나옴
+
+        // 메뉴는 ,로 되어있으니까 <li>로..
+        const menus = filterResult.menu.split(",")
+        console.log(menus) // 메뉴 배열
+
+        let str = ''
+
+        for (let i = 0; i < menus.length; i++) {
+            str += `<li>${menus[i]}</li>`
+        }
+        $('ul').html(str)
+
+
+
+    }) // 가게 번호 알아냄
+
+
+})
+</script>
+</body>
+</html>

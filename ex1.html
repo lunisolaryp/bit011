@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    .node {
+        width: 200px;
+        /*height: 50px;*/
+        background-color: #cabbf5;
+        padding-left: 30px;
+        text-decoration: underline;
+    }
+</style>
+
+
+<div class="container">
+    <div class="node">
+        <b>ROOT</b>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+
+    let count = 0
+
+    $(".container").on("click",".node",function (e){
+        console.log("--------------------------------") // 클릭이벤트가 몇 번 걸리는지 알고 싶어서
+        e.preventDefault() // 두개는 이벤트 전파 막기 위해!
+        e.stopPropagation()
+        // console.log(e.target)
+        const targetNode = $(e.target) // targetNode는 jquery가 되어버림
+
+        targetNode.append(`<div class="node"><div>${count++}<button>X</button></div></div>`) // 이벤트전파때뭉에 이상해짐
+
+    })
+
+    $(".container").on("click",".node button",function (e){
+        e.stopPropagation()
+        // console.log(e.target)
+        // console.log(e.target.closest(".node")) // 순수한DOM -> remove 기능 위해 jquery로 싸서 써야해
+        const target = $(e.target.closest(".node"))
+
+        // console.log(target.find(".node")) // button 눌러보면 length가 몇 개인지(하위 몇개인지) 나와
+        const children = target.find(".node")
+
+        if(children.length > 0){
+            alert("삭제 불가")
+            return
+        }
+
+        target.remove()
+    })
+})
+</script>
+
+</body>
+</html>
